@@ -1,57 +1,61 @@
-function addRequiredMessages() {
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("survey");
-  
-    if (!sheet) {
-      SpreadsheetApp.getUi().alert("Sheet 'survey' not found.");
-      return;
-    }
-  
-    const data = sheet.getDataRange().getValues();
-    const headers = data[0];
-  
-    const typeCol = headers.indexOf("type");
-    const requiredCol = headers.indexOf("required");
-    const requiredMsgCol = headers.indexOf("required message");
-    const requiredMsgDariCol = headers.indexOf("required message:Dari");
-    const requiredMsgPashtoCol = headers.indexOf("required message:Pashto");
-  
-    if (
-      typeCol === -1 ||
-      requiredCol === -1 ||
-      requiredMsgCol === -1 ||
-      requiredMsgDariCol === -1 ||
-      requiredMsgPashtoCol === -1
-    ) {
-      SpreadsheetApp.getUi().alert(
-        "Could not find one or more required columns:\n" +
-        "type, required, required message, required message:Dari, required message:Pashto"
-      );
-      return;
-    }
-  
-    for (let i = 1; i < data.length; i++) {
-      const type = String(data[i][typeCol]).trim();
-  
-      const shouldRequire =
-        type === "text" ||
-        type === "decimal" ||
-        type === "integer" ||
-        type === "date" ||
-        type === "audio" ||
-        type === "image" ||
-        type === "geopoint" ||
-        type.startsWith("select_one") ||
-        type.startsWith("select_multiple");
-  
-      if (shouldRequire) {
-        data[i][requiredCol] = "TRUE";
-        data[i][requiredMsgCol] = "The response is required";
-        data[i][requiredMsgDariCol] = "جواب حتمی است";
-        data[i][requiredMsgPashtoCol] = "ځواب حتمي دی";
-      }
-    }
-  
-    sheet.getDataRange().setValues(data);
-  
-    SpreadsheetApp.getUi().alert("Required settings added successfully.");
+function addFormatting() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("survey"); // Change if needed
+
+  const data = sheet.getDataRange().getValues();
+
+  if (data.length < 2) return;
+
+  // Find column indexes
+  const headers = data[0].map(h => String(h).trim());
+
+Logger.log(headers);
+
+const typeCol = headers.indexOf("type");
+const dariCol = headers.indexOf("label:Dari");
+const pashtoCol = headers.indexOf("label:Pashto");
+
+  if (typeCol === -1 || dariCol === -1 || pashtoCol === -1) {
+    SpreadsheetApp.getUi().alert(
+      "Could not find one or more required columns:\n" +
+      "type, label:Dari, label:Pashto"
+    );
+    return;
   }
+
+  const prefix = "<p dir='rtl'><b>";
+
+  for (let i = 1; i < data.length; i++) {
+    const type = String(data[i][typeCol]).trim();
+
+    const matches =
+      type === "text" ||
+      type === "decimal" ||
+      type === "integer" ||
+      type === "date" ||
+      type === "note" ||
+      type === "audio" ||
+      type === "image" ||
+      type === "geopoint" ||
+      type.startsWith("select_one") ||
+      type.startsWith("select_multiple");
+
+    if (!matches) continue;
+
+    // Dari
+    let dari = String(data[i][dariCol] || "");
+    if (dari && !dari.trim().startsWith(prefix)) {
+      data[i][dariCol] = prefix + dari;
+    }
+
+    // Pashto
+    let pashto = String(data[i][pashtoCol] || "");
+    if (pashto && !pashto.trim().startsWith(prefix)) {
+      data[i][pashtoCol] = prefix + pashto;
+    }
+  }
+
+  // Write everything back in one operation
+  sheet.getDataRange().setValues(data);
+
+  SpreadsheetApp.getUi().alert("RTL formatting added where needed.");
+}

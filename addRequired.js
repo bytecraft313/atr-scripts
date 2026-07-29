@@ -1,4 +1,4 @@
-function addRequiredMessages() {
+function addRequired() {
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("survey");
   
     if (!sheet) {
