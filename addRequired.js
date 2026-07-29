@@ -44,10 +44,18 @@ function addRequiredMessages() {
         type.startsWith("select_multiple");
   
       if (shouldRequire) {
-        data[i][requiredCol] = "TRUE";
-        data[i][requiredMsgCol] = "The response is required";
-        data[i][requiredMsgDariCol] = "جواب حتمی است";
-        data[i][requiredMsgPashtoCol] = "ځواب حتمي دی";
+        if (!data[i][requiredCol]) {
+          data[i][requiredCol] = "TRUE";
+        }
+        if (!data[i][requiredMsgCol]) {
+          data[i][requiredMsgCol] = "The response is required";
+        }
+        if (!data[i][requiredMsgDariCol]) {
+          data[i][requiredMsgDariCol] = "جواب حتمی است";
+        }
+        if (!data[i][requiredMsgPashtoCol]) {
+          data[i][requiredMsgPashtoCol] = "ځواب حتمي دی";
+        }
       }
     }
   
