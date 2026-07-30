@@ -13,16 +13,18 @@ Logger.log(headers);
 const typeCol = headers.indexOf("type");
 const dariCol = headers.indexOf("label:Dari");
 const pashtoCol = headers.indexOf("label:Pashto");
+const englishCol = headers.indexOf("label:English");
 
-  if (typeCol === -1 || dariCol === -1 || pashtoCol === -1) {
+  if (typeCol === -1 || dariCol === -1 || pashtoCol === -1 || englishCol === -1) {
     SpreadsheetApp.getUi().alert(
       "Could not find one or more required columns:\n" +
-      "type, label:Dari, label:Pashto"
+      "type, label:Dari, label:Pashto, label:English"
     );
     return;
   }
 
   const prefix = "<p dir='rtl'><b>";
+  const englishPrefix = "<b>";
 
   for (let i = 1; i < data.length; i++) {
     const type = String(data[i][typeCol]).trim();
@@ -52,7 +54,15 @@ const pashtoCol = headers.indexOf("label:Pashto");
     if (pashto && !pashto.trim().startsWith(prefix)) {
       data[i][pashtoCol] = prefix + pashto;
     }
+
+    // English
+    let english = String(data[i][englishCol] || "");
+    if (english && !english.trim().startsWith(englishPrefix)) {
+      data[i][englishCol] = englishPrefix + english;
+    }
   }
+
+
 
   // Write everything back in one operation
   sheet.getDataRange().setValues(data);
