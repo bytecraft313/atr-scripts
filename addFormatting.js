@@ -67,5 +67,5 @@ const englishCol = headers.indexOf("label:English");
   // Write everything back in one operation
   sheet.getDataRange().setValues(data);
 
-  SpreadsheetApp.getUi().alert("RTL formatting added where needed.");
+  SpreadsheetApp.getUi().alert("Label formatting added where needed.");
 }
