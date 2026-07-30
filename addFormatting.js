@@ -13,12 +13,12 @@ Logger.log(headers);
 const typeCol = headers.indexOf("type");
 const dariCol = headers.indexOf("label:Dari");
 const pashtoCol = headers.indexOf("label:Pashto");
-const englishCol = headers.indexOf("label:English");
+const englishCol = headers.indexOf("label");
 
   if (typeCol === -1 || dariCol === -1 || pashtoCol === -1 || englishCol === -1) {
     SpreadsheetApp.getUi().alert(
       "Could not find one or more required columns:\n" +
-      "type, label:Dari, label:Pashto, label:English"
+      "type, label:Dari, label:Pashto, label"
     );
     return;
   }
