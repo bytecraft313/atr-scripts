@@ -1,4 +1,4 @@
-function addFormatting() {
+function myFunction() {
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("survey"); // Change if needed
 
   const data = sheet.getDataRange().getValues();

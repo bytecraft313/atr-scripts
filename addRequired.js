@@ -1,4 +1,4 @@
-function addRequired() {
+function myFunction() {
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("survey");
   
     if (!sheet) {
