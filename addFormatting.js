@@ -34,6 +34,7 @@ const englishCol = headers.indexOf("label");
       type === "decimal" ||
       type === "integer" ||
       type === "date" ||
+      type === "datetime" ||
       type === "note" ||
       type === "audio" ||
       type === "image" ||
