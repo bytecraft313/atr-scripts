@@ -40,6 +40,7 @@ const englishCol = headers.indexOf("label");
       type === "image" ||
       type === "geopoint" ||
       type.startsWith("select_one") ||
+      type === "time" ||
       type.startsWith("select_multiple");
 
     if (!matches) continue;
